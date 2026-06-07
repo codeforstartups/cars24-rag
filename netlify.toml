@@ -1,0 +1,16 @@
+# Netlify — deploys the React frontend only (rag-app/frontend)
+# The FastAPI backend must be deployed separately (see render.yaml + rag-app/DEPLOY.md)
+
+[build]
+  base = "rag-app/frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA — all routes serve index.html (React client-side app)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

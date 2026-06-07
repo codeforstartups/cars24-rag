@@ -1,0 +1,28 @@
+# Render — deploys the FastAPI backend (rag-app/backend)
+# Create a Web Service on Render and point it at this repo, or use Blueprint deploy.
+
+services:
+  - type: web
+    name: cars24-rag-api
+    runtime: python
+    rootDir: rag-app/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_INDEX_NAME
+        value: cars24-vehicles
+      - key: EMBEDDING_MODEL
+        value: text-embedding-3-small
+      - key: EMBEDDING_DIMENSIONS
+        value: "1536"
+      - key: CHAT_MODEL
+        value: gpt-4o-mini
+      - key: CORS_ORIGINS
+        value: https://verdant-salmiakki-a44ae8.netlify.app
+      - key: CORS_ORIGIN_REGEX
+        value: https://.*\.netlify\.app

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 1536
     chat_model: str = "gpt-4o-mini"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    cors_origin_regex: str = r"https://.*\.netlify\.app"
 
     @property
     def cors_origin_list(self) -> list[str]:
