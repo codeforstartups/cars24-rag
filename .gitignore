@@ -14,7 +14,8 @@ Thumbs.db
 # ─── Secrets & environment ───────────────────────────────────────────────────
 .env
 .env.*
-!.env.example
+.env.example
+
 
 # ─── Python (rag-app/backend) ────────────────────────────────────────────────
 .venv/
