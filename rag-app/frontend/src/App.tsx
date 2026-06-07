@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Car, Database, Upload } from "lucide-react";
+import { Car, Sparkles } from "lucide-react";
 import { checkHealth } from "./api";
 import { Chat } from "./components/Chat";
 
@@ -22,38 +22,50 @@ export default function App() {
       .catch(() => setHealth(null));
   }, []);
 
+  const connected =
+    health?.openai_configured && health?.pinecone_configured;
+
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-br from-slate-50 via-white to-brand-50/30">
-      <header className="shrink-0 border-b border-slate-200/60 bg-white/70 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+    <div className="app-bg flex h-screen flex-col">
+      <header className="shrink-0 border-b border-white/10 bg-ink-900 text-white shadow-lg">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3.5 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 shadow-md">
-              <Car className="h-5 w-5 text-white" />
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-glow">
+              <Car className="h-5 w-5 text-white" strokeWidth={2.5} />
+              <div className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white">
+                <Sparkles className="h-2.5 w-2.5 text-brand-500" />
+              </div>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900">Cars24 AI</h1>
-              <p className="text-xs text-slate-500">Powered by RAG + Pinecone</p>
+              <h1 className="text-base font-bold tracking-tight sm:text-lg">
+                Cars24 AI
+              </h1>
+              <p className="text-[11px] font-medium text-slate-400">
+                Smart car search assistant
+              </p>
             </div>
           </div>
 
           {health && (
-            <div className="hidden items-center gap-4 text-xs text-slate-500 sm:flex">
-              <span className="flex items-center gap-1.5">
-                <Database className="h-3.5 w-3.5" />
-                {health.total_vectors != null
-                  ? `${health.total_vectors.toLocaleString()} cars indexed`
-                  : "Index not ready"}
-              </span>
+            <div className="flex items-center gap-2">
+              {health.total_vectors != null && (
+                <span className="hidden rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-slate-300 sm:inline">
+                  {health.total_vectors.toLocaleString()} cars
+                </span>
+              )}
               <span
-                className={`rounded-full px-2 py-0.5 font-medium ${
-                  health.openai_configured && health.pinecone_configured
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "bg-amber-50 text-amber-700"
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                  connected
+                    ? "bg-emerald-500/15 text-emerald-400"
+                    : "bg-amber-500/15 text-amber-400"
                 }`}
               >
-                {health.openai_configured && health.pinecone_configured
-                  ? "Connected"
-                  : "Setup required"}
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    connected ? "bg-emerald-400" : "bg-amber-400"
+                  }`}
+                />
+                {connected ? "Live" : "Offline"}
               </span>
             </div>
           )}
@@ -63,17 +75,6 @@ export default function App() {
       <main className="flex-1 overflow-hidden">
         <Chat />
       </main>
-
-      <footer className="shrink-0 border-t border-slate-100 bg-white/50 px-4 py-2 text-center text-xs text-slate-400">
-        <span className="inline-flex items-center gap-1">
-          <Upload className="h-3 w-3" />
-          Export JSON from the Chrome extension, then run{" "}
-          <code className="rounded bg-slate-100 px-1 py-0.5 text-slate-600">
-            python ingest.py your-export.json
-          </code>{" "}
-          to index new listings
-        </span>
-      </footer>
     </div>
   );
 }

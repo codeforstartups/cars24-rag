@@ -4,14 +4,30 @@ import {
   Gauge,
   MapPin,
   Settings2,
-  Tag,
+  ShieldCheck,
 } from "lucide-react";
 import type { Car } from "../types";
+import { displayOriginalPrice } from "../utils/format";
 import { ImageGallery } from "./ImageGallery";
 
 interface CarCardProps {
   car: Car;
   variant?: "grid" | "slider";
+}
+
+function SpecChip({
+  icon: Icon,
+  label,
+}: {
+  icon: React.ElementType;
+  label: string;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2.5 ring-1 ring-slate-100">
+      <Icon className="h-4 w-4 shrink-0 text-brand-500" strokeWidth={2} />
+      <span className="text-xs font-semibold text-ink-800">{label}</span>
+    </div>
+  );
 }
 
 export function CarCard({ car, variant = "grid" }: CarCardProps) {
@@ -23,71 +39,74 @@ export function CarCard({ car, variant = "grid" }: CarCardProps) {
         : [];
 
   const isSlider = variant === "slider";
+  const original = displayOriginalPrice(car.originalPrice, car.emi);
 
   return (
     <article
-      className={`overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-shadow hover:shadow-md ${
-        isSlider ? "h-full" : "animate-slide-up"
+      className={`overflow-hidden bg-white transition-shadow duration-300 ${
+        isSlider
+          ? "rounded-3xl shadow-card hover:shadow-card-hover"
+          : "animate-slide-up rounded-2xl shadow-sm"
       }`}
     >
       <ImageGallery images={images} title={car.title} size={isSlider ? "large" : "default"} />
 
-      <div className="space-y-3 p-4">
-        <div className="flex items-start justify-between gap-2">
+      <div className="space-y-4 p-5">
+        <div className="space-y-2">
+          {car.badge && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-brand-700 ring-1 ring-brand-100">
+              <ShieldCheck className="h-3 w-3" />
+              {car.badge}
+            </span>
+          )}
+          <h3 className="text-base font-bold leading-snug text-ink-900 sm:text-lg">
+            {car.title || `${car.make} ${car.model}`}
+          </h3>
+        </div>
+
+        <div className="flex items-end justify-between gap-3 rounded-2xl bg-gradient-to-r from-brand-50/80 to-orange-50/50 px-4 py-3 ring-1 ring-brand-100/60">
           <div>
-            <h3 className="font-semibold text-slate-900 leading-tight">
-              {car.title || `${car.make} ${car.model}`}
-            </h3>
-            {car.badge && (
-              <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
-                <Tag className="h-3 w-3" />
-                {car.badge}
-              </span>
-            )}
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-600/80">
+              Price
+            </p>
+            <p className="text-2xl font-extrabold tracking-tight text-brand-600">
+              {car.price}
+            </p>
           </div>
-          <div className="text-right shrink-0">
-            <p className="text-lg font-bold text-brand-600">{car.price}</p>
-            {car.originalPrice && (
-              <p className="text-xs text-slate-400 line-through">
-                {car.originalPrice}
+          <div className="text-right">
+            {original && (
+              <p className="text-xs font-medium text-slate-400 line-through">
+                {original}
               </p>
             )}
             {car.emi && (
-              <p className="text-xs text-slate-500">EMI {car.emi}</p>
+              <p className="text-xs font-semibold text-ink-700">
+                EMI {car.emi}
+              </p>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-xs text-slate-600">
-          {car.mileage && (
-            <span className="flex items-center gap-1.5">
-              <Gauge className="h-3.5 w-3.5 text-slate-400" />
-              {car.mileage}
-            </span>
-          )}
-          {car.fuel && (
-            <span className="flex items-center gap-1.5">
-              <Fuel className="h-3.5 w-3.5 text-slate-400" />
-              {car.fuel}
-            </span>
-          )}
+        <div className="grid grid-cols-3 gap-2">
+          {car.mileage && <SpecChip icon={Gauge} label={car.mileage} />}
+          {car.fuel && <SpecChip icon={Fuel} label={car.fuel} />}
           {car.transmission && (
-            <span className="flex items-center gap-1.5">
-              <Settings2 className="h-3.5 w-3.5 text-slate-400" />
-              {car.transmission}
-            </span>
-          )}
-          {car.location && (
-            <span className="flex items-center gap-1.5 col-span-2">
-              <MapPin className="h-3.5 w-3.5 text-slate-400" />
-              {car.location}
-            </span>
+            <SpecChip icon={Settings2} label={car.transmission} />
           )}
         </div>
 
+        {car.location && (
+          <div className="flex items-start gap-2 rounded-xl bg-slate-50 px-3 py-2.5 ring-1 ring-slate-100">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+            <span className="text-xs font-medium leading-relaxed text-slate-600">
+              {car.location}
+            </span>
+          </div>
+        )}
+
         {(car.owners || car.rto) && (
-          <p className="text-xs text-slate-500">
-            {[car.owners, car.rto && `RTO ${car.rto}`].filter(Boolean).join(" · ")}
+          <p className="text-center text-[11px] font-medium text-slate-400">
+            {[car.owners, car.rto && `RTO ${car.rto}`].filter(Boolean).join("  ·  ")}
           </p>
         )}
 
@@ -96,10 +115,10 @@ export function CarCard({ car, variant = "grid" }: CarCardProps) {
             href={car.detailUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+            className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-ink-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-ink-800 hover:shadow-lg active:scale-[0.98]"
           >
             View on Cars24
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
           </a>
         )}
       </div>

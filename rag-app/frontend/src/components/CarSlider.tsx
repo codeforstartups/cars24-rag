@@ -13,13 +13,16 @@ export function CarSlider({ cars, streaming }: CarSliderProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const prevCount = useRef(cars.length);
 
-  const scrollToIndex = useCallback((index: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const clamped = Math.max(0, Math.min(index, cars.length - 1));
-    track.scrollTo({ left: clamped * track.clientWidth, behavior: "smooth" });
-    setActiveIndex(clamped);
-  }, [cars.length]);
+  const scrollToIndex = useCallback(
+    (index: number) => {
+      const track = trackRef.current;
+      if (!track) return;
+      const clamped = Math.max(0, Math.min(index, cars.length - 1));
+      track.scrollTo({ left: clamped * track.clientWidth, behavior: "smooth" });
+      setActiveIndex(clamped);
+    },
+    [cars.length]
+  );
 
   useEffect(() => {
     if (cars.length > prevCount.current && streaming) {
@@ -49,51 +52,56 @@ export function CarSlider({ cars, streaming }: CarSliderProps) {
   const next = () => scrollToIndex(activeIndex + 1);
 
   return (
-    <div className="relative w-full">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-xs font-medium text-slate-500">
-          {streaming && cars.length < 6
-            ? `Finding cars… ${cars.length} so far`
-            : `${cars.length} car${cars.length !== 1 ? "s" : ""} found`}
-        </span>
-        <span className="text-xs font-medium text-slate-400">
-          {activeIndex + 1} / {cars.length}
-        </span>
-      </div>
-
-      <div className="relative overflow-hidden rounded-2xl">
+    <div className="w-full animate-slide-up">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
+            Results
+          </p>
+          <p className="text-sm font-semibold text-ink-800">
+            {streaming && cars.length < 6 ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500" />
+                Finding cars… {cars.length} found
+              </span>
+            ) : (
+              `${cars.length} matching car${cars.length !== 1 ? "s" : ""}`
+            )}
+          </p>
+        </div>
         {cars.length > 1 && (
-          <>
+          <div className="flex items-center gap-1.5">
             <button
               onClick={prev}
               disabled={activeIndex === 0}
-              className="absolute left-3 top-[140px] z-10 rounded-full bg-white/95 p-2.5 shadow-lg ring-1 ring-slate-200/80 transition hover:bg-white disabled:opacity-0"
+              className="rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200/80 transition hover:bg-slate-50 disabled:opacity-30"
               aria-label="Previous car"
             >
-              <ChevronLeft className="h-5 w-5 text-slate-800" />
+              <ChevronLeft className="h-4 w-4 text-ink-800" />
             </button>
+            <span className="min-w-[3rem] text-center text-xs font-bold text-slate-500">
+              {activeIndex + 1}/{cars.length}
+            </span>
             <button
               onClick={next}
               disabled={activeIndex === cars.length - 1}
-              className="absolute right-3 top-[140px] z-10 rounded-full bg-white/95 p-2.5 shadow-lg ring-1 ring-slate-200/80 transition hover:bg-white disabled:opacity-0"
+              className="rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200/80 transition hover:bg-slate-50 disabled:opacity-30"
               aria-label="Next car"
             >
-              <ChevronRight className="h-5 w-5 text-slate-800" />
+              <ChevronRight className="h-4 w-4 text-ink-800" />
             </button>
-          </>
+          </div>
         )}
+      </div>
 
+      <div className="relative">
         <div
           ref={trackRef}
-          className="scrollbar-hide flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+          className="scrollbar-hide flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-3xl"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          {cars.map((car, i) => (
-            <div
-              key={car.vehicleId}
-              className="w-full shrink-0 snap-center"
-              style={{ animationDelay: `${i * 60}ms` }}
-            >
+          {cars.map((car) => (
+            <div key={car.vehicleId} className="w-full shrink-0 snap-center px-0.5">
               <CarCard car={car} variant="slider" />
             </div>
           ))}
@@ -101,15 +109,15 @@ export function CarSlider({ cars, streaming }: CarSliderProps) {
       </div>
 
       {cars.length > 1 && (
-        <div className="mt-4 flex justify-center gap-1.5">
+        <div className="mt-5 flex justify-center gap-1.5">
           {cars.map((car, i) => (
             <button
               key={car.vehicleId}
               onClick={() => scrollToIndex(i)}
-              className={`h-2 rounded-full transition-all ${
+              className={`rounded-full transition-all duration-300 ${
                 i === activeIndex
-                  ? "w-6 bg-brand-500"
-                  : "w-2 bg-slate-300 hover:bg-slate-400"
+                  ? "h-2 w-7 bg-gradient-to-r from-brand-500 to-brand-600"
+                  : "h-2 w-2 bg-slate-300 hover:bg-slate-400"
               }`}
               aria-label={`Go to car ${i + 1}`}
             />
