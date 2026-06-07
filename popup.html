@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cars24 Crawler</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <h1>Cars24 Crawler</h1>
+    <p class="subtitle">Human-like listing scraper</p>
+  </header>
+
+  <section class="status-card">
+    <div class="status-row">
+      <span class="label">Status</span>
+      <span id="status" class="value">Idle</span>
+    </div>
+    <div class="status-row">
+      <span class="label">Vehicles</span>
+      <span id="vehicleCount" class="value highlight">0</span>
+    </div>
+    <div class="status-row">
+      <span class="label">Scrolls</span>
+      <span id="scrollCount" class="value">0</span>
+    </div>
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <p id="statusMessage" class="status-message">Open a Cars24 listing page to begin.</p>
+  </section>
+
+  <section class="controls">
+    <button id="startBtn" class="btn btn-primary">Start Crawl</button>
+    <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
+    <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
+  </section>
+
+  <section class="settings">
+    <h2>Settings</h2>
+
+    <label class="setting-row">
+      <input type="checkbox" id="visitDetails" />
+      <span>Fetch detail page data (slower — opens each car page)</span>
+    </label>
+    <p id="fastModeHint" class="setting-hint">Listing-only mode is ON — cards are scraped fast with yellow highlights.</p>
+
+    <div class="setting-group">
+      <label>Scroll delay (seconds)</label>
+      <div class="range-pair">
+        <input type="number" id="scrollDelayMin" value="1.5" min="0.5" max="30" step="0.5" />
+        <span>to</span>
+        <input type="number" id="scrollDelayMax" value="4" min="1" max="60" step="0.5" />
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label>Detail page delay (seconds)</label>
+      <div class="range-pair">
+        <input type="number" id="detailDelayMin" value="3" min="1" max="60" step="0.5" />
+        <span>to</span>
+        <input type="number" id="detailDelayMax" value="8" min="2" max="120" step="0.5" />
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label>Max scrolls before stopping</label>
+      <input type="number" id="maxScrolls" value="200" min="10" max="2000" step="10" />
+    </div>
+  </section>
+
+  <section class="sheets-section">
+    <h2>Google Sheets</h2>
+    <p id="sheetsStatusText" class="sheets-status">Not connected</p>
+
+    <div id="sheetsSetup" class="sheets-setup">
+      <p class="sheets-setup-title">Easy connect (recommended)</p>
+      <ol class="sheets-steps">
+        <li>Create a <a href="https://sheets.new" target="_blank">new Google Sheet</a></li>
+        <li>Extensions → Apps Script → paste <code>apps-script/Code.gs</code> → Deploy as Web App (Anyone)</li>
+        <li>Paste URLs below and click Connect</li>
+      </ol>
+
+      <div class="setting-group">
+        <label>Apps Script Web App URL</label>
+        <input type="text" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+      </div>
+      <div class="setting-group">
+        <label>Google Sheet URL (to open your sheet)</label>
+        <input type="text" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..." />
+      </div>
+      <button id="connectWebhookBtn" class="btn btn-primary full-width">Connect Sheet via Apps Script</button>
+
+      <details class="oauth-details">
+        <summary>Advanced: OAuth connect</summary>
+        <p id="oauthHint" class="sheets-status">Requires Client ID in manifest.json</p>
+        <p class="sheets-ext-id">Extension ID: <code id="extensionId">…</code></p>
+        <button id="connectGoogleBtn" class="btn btn-secondary full-width">Connect Google Account (OAuth)</button>
+        <button id="createSheetBtn" class="btn btn-outline full-width">Create New Spreadsheet</button>
+        <button id="linkSheetBtn" class="btn btn-outline full-width">Link Existing Sheet (OAuth)</button>
+      </details>
+    </div>
+
+    <div id="sheetsActions" class="sheets-actions hidden">
+      <label class="setting-row">
+        <input type="checkbox" id="sheetsAutoSync" checked />
+        <span>Auto-save each vehicle to sheet</span>
+      </label>
+
+      <a id="openSheetLink" class="sheet-link hidden" href="#" target="_blank">Open spreadsheet ↗</a>
+      <button id="syncAllBtn" class="btn btn-secondary full-width">Sync All Collected Data</button>
+      <button id="disconnectGoogleBtn" class="btn btn-danger full-width">Disconnect</button>
+    </div>
+  </section>
+
+  <section class="export">
+    <button id="extractBtn" class="btn btn-secondary">Extract Visible Now</button>
+    <button id="exportJsonBtn" class="btn btn-outline">Export JSON</button>
+    <button id="exportCsvBtn" class="btn btn-outline">Export CSV</button>
+  </section>
+
+  <footer>
+    <p>Tip: Start on <code>cars24.com/buy-used-cars-delhi-ncr/</code></p>
+    <p class="data-hint">JSON stored in extension storage · Export JSON to download file</p>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

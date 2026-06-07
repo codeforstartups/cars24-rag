@@ -1,0 +1,74 @@
+# ─── OS & editor ─────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# ─── Secrets & environment ───────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Python (rag-app/backend) ────────────────────────────────────────────────
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Accidental nested git repo inside backend
+rag-app/backend/.git/
+
+# ─── Node / frontend (rag-app/frontend) ──────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+rag-app/frontend/dist/
+rag-app/frontend/.vite/
+*.tsbuildinfo
+
+# ─── Chrome extension packaging ──────────────────────────────────────────────
+*.crx
+*.pem
+*.zip
+
+# ─── Logs & temp files ───────────────────────────────────────────────────────
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# ─── Crawl exports (generated — keep sample-vehicles.json) ───────────────────
+cars24-vehicles-*.json
+cars24-vehicles-*.csv
+!rag-app/data/sample-vehicles.json

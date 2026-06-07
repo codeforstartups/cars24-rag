@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Cars24 Vehicle Crawler",
+  "version": "1.2.1",
+  "description": "Human-like crawler for Cars24 used car listings — scrolls, extracts vehicle data, syncs to Google Sheets.",
+  "permissions": ["activeTab", "storage", "downloads", "scripting", "tabs", "identity"],
+  "host_permissions": [
+    "https://www.cars24.com/*",
+    "https://www.googleapis.com/*",
+    "https://sheets.googleapis.com/*",
+    "https://script.google.com/*"
+  ],
+  "oauth2": {
+    "client_id": "REPLACE_WITH_YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive.file"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.cars24.com/buy-used-*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

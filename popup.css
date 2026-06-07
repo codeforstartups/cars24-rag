@@ -1,0 +1,319 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 340px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  color: #1a1a2e;
+  background: #f8f9fc;
+  padding: 16px;
+}
+
+header {
+  margin-bottom: 14px;
+}
+
+header h1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0052cc;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.status-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.label {
+  color: #6b7280;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.value.highlight {
+  color: #0052cc;
+  font-size: 15px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #0052cc, #3b82f6);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.status-message {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.controls {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #0052cc;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.btn-outline {
+  background: #fff;
+  color: #0052cc;
+  border: 1px solid #0052cc;
+}
+
+.settings {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.settings h2 {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.setting-hint {
+  font-size: 10px;
+  color: #059669;
+  margin: -4px 0 10px 0;
+  line-height: 1.4;
+}
+
+.setting-group {
+  margin-bottom: 10px;
+}
+
+.setting-group label {
+  display: block;
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.setting-group input[type="number"] {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.range-pair {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.range-pair input {
+  flex: 1;
+}
+
+.range-pair span {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.sheets-section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.sheets-section h2 {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+}
+
+.sheets-status {
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.sheets-setup-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.sheets-steps {
+  font-size: 10px;
+  color: #6b7280;
+  margin: 0 0 10px 16px;
+  line-height: 1.5;
+}
+
+.sheets-steps a {
+  color: #0052cc;
+}
+
+.sheets-steps code {
+  font-size: 9px;
+  background: #f3f4f6;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.oauth-details {
+  margin-top: 10px;
+  font-size: 11px;
+}
+
+.oauth-details summary {
+  cursor: pointer;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.sheets-ext-id {
+  font-size: 10px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+
+.sheets-ext-id code {
+  font-size: 9px;
+  background: #f3f4f6;
+  padding: 1px 3px;
+}
+
+.sheets-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.sheets-actions.hidden {
+  display: none;
+}
+
+.full-width {
+  width: 100%;
+  flex: none;
+}
+
+.sheet-link {
+  font-size: 11px;
+  color: #0052cc;
+  text-decoration: none;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.sheet-link.hidden {
+  display: none;
+}
+
+.export {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+}
+
+footer p {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+footer code {
+  font-size: 9px;
+  background: #e5e7eb;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.data-hint {
+  margin-top: 4px;
+  font-size: 9px;
+  color: #9ca3af;
+}
